@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Piedra, Papel o Tijeras</title>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        .contenedor {
+            width: 500px;
+            height: 120px;
+            margin: 10px auto;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        div.contenedor  div {
+            float: left;
+            margin: 20px auto;
+            padding: 20px;
+        }
+
+        div.contenedor div:hover {
+            background-color: green;
+        }
+
+        .ganaste{
+            display: none;
+            position: absolute;
+            width: 100%;
+            text-align: center;
+            color: #88d471;
+            font-size: 30px;
+            font-family: Verdana;
+            font-weight: 700;
+        }
+
+        .perdiste{
+            display: none;
+            position: absolute;
+            width: 100%;
+            text-align: center;
+            color: #d47171;
+            font-size: 30px;
+            font-family: Verdana;
+            font-weight: 700;
+        }
+
+        .empate{
+            display: none;
+            position: absolute;
+            width: 100%;
+            text-align: center;
+            color: #7371d4;
+            font-size: 30px;
+            font-family: Verdana;
+            font-weight: 700;
+        }
+
+        .piedra{
+            width: 115px;
+            height: 115px;
+            margin: 0 auto;
+        }
+
+        .papel{
+            width: 115px;
+            height: 115px;
+            margin: 0 auto;
+        }
+
+        .tijera{
+            width: 115px;
+            height: 115px;
+            margin: 0 auto;
+        }
+
+        .div-selected{
+            background-color: green;
+        }
+        
+        .contenedor-boton{
+            margin: auto;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .boton {
+            padding: 15px 25px;
+            font-size: 24px;
+            cursor: pointer;
+            text-align: center;
+            text-decoration: none;
+            outline: none;
+            color: #fff;
+            background-color: #04AA6D;
+            border: none;
+            border-radius: 15px;
+            box-shadow: 0 9px #999;
+        }
+
+        .boton:hover {
+            background-color: #3e8e41
+        }
+
+        .boton:active {
+            background-color: #3e8e41;
+            box-shadow: 0 5px #666;
+            transform: translateY(4px);
+        }
+
+        .encabezado{
+            margin: auto;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        .encabezado h1{
+            font-weight: bold;
+            text-decoration-line: underline;
+        }
+
+        .maquina{
+            width: 115px;
+            height: 115px;
+            margin: 0 auto;
+        }
+
+        .img-papel{
+            background: url(img/papel.png) no-repeat;
+            background-size: 115px 115px;
+        }
+
+        .img-piedra{
+            background: url(img/piedra.png) no-repeat;
+            background-size: 115px 115px;
+        }
+
+        .img-tijera{
+            background: url(img/tijeras.png) no-repeat;
+            background-size: 115px 115px;
+        }
+
+        .ocultar{
+            display: none;
+        }
+
+        .mostrar{
+            display: block;
+        }
+
+        .score{
+            position:static;
+        }
+    </style>
+</head>
+<body>
+    <div class="score">0</div>
+    <div class="opcion">0</div>
+    <div class="encabezado"><h1>OPCIONES</h1></div>
+    <div class="contenedor">
+        <div class="piedra"><img src="img/piedra.png" alt=""></div>
+        <div class="papel"><img src="img/papel.png" alt=""></div>
+        <div class="tijera"><img src="img/tijeras.png" alt=""></div>
+    </div>
+    <div class="encabezado"><h1>MAQUINA</h1></div>
+    <div class="contenedor">
+        <div class="maquina"></div>
+    </div>
+    <div class="contenedor">
+        <div class="ganaste">GANASTE</div>
+        <div class="perdiste">PERDISTE</div>
+        <div class="empate">EMPATE</div>
+    </div>
+    <div class="contenedor">
+        <button class="boton">Jugar</button>
+    </div>
+    <div class="ganaste">GANASTE</div>
+    <div class="perdiste">PERDISTE</div>
+    <div class="empate">EMPATE</div>
+    <script>
+var div_papel;
+var div_piedra;
+var div_tijera;
+var selected;
+var boton;
+var maquina;
+var ganaste;
+var perdiste;
+var empate;
+var score;
+var opcion;
+
+div_papel = document.querySelector(".papel");
+div_piedra = document.querySelector(".piedra");
+div_tijera = document.querySelector(".tijera");
+boton = document.querySelector(".boton");
+maquina = document.querySelector(".maquina");
+ganaste = document.querySelector(".ganaste");
+perdiste = document.querySelector(".perdiste");
+empate = document.querySelector(".empate");
+score = document.querySelector(".score");
+opcion = document.querySelector(".opcion");
+
+div_papel.addEventListener("click", seleccionarPapel);
+div_piedra.addEventListener("click", seleccionarPiedra);
+div_tijera.addEventListener("click", seleccionarTijera);
+boton.addEventListener("click", jugar);
+
+function seleccionarPapel() {
+    div_papel.classList.add("div-selected");
+    div_piedra.classList.remove("div-selected");
+    div_tijera.classList.remove("div-selected");
+    selected = 2;
+    score.innerText = selected;
+}
+
+function seleccionarPiedra() {
+    div_papel.classList.remove("div-selected");
+    div_piedra.classList.add("div-selected");
+    div_tijera.classList.remove("div-selected");
+    selected = 1;
+    score.innerText = selected;
+}
+
+function seleccionarTijera() {
+    div_papel.classList.remove("div-selected");
+    div_piedra.classList.remove("div-selected");
+    div_tijera.classList.add("div-selected");
+    selected = 3;
+    score.innerText = selected;
+}
+
+function jugar(){
+    var opcion_maquina = Math.floor(Math.random() * 4) + 1;
+    if (opcion_maquina > 3) {
+        opcion_maquina = 3;
+    } else if (opcion_maquina < 1) {
+        opcion_maquina = 1;
+    }
+    opcion.innerText = opcion_maquina;
+    maquina.classList.remove("img-piedra");
+    maquina.classList.remove("img-papel");
+    maquina.classList.remove("img-tijera");
+    
+    if (opcion_maquina == 1) {
+        maquina.classList.add("img-piedra");
+    } else if (opcion_maquina == 2) {
+        maquina.classList.add("img-papel");
+    } else {
+        maquina.classList.add("img-tijera");
+    }
+    
+    if (selected == opcion_maquina) {
+        empate.style.display = "block";
+        perdiste.style.display = "none"
+        ganaste.style.display = "none";
+    } else if (selected == 1 && opcion_maquina == 2) {
+        perdiste.style.display = "block";
+        empate.style.display = "none";
+        ganaste.style.display = "none";
+    } else if (selected == 1 && opcion_maquina == 3) {
+        ganaste.style.display = "block";
+        empate.style.display = "none";
+        perdiste.style.display = "none";
+    } else if (selected == 2 && opcion_maquina == 1) {
+        ganaste.style.display = "block";
+        empate.style.display = "none";
+        perdiste.style.display = "none";
+    } else if (selected == 2 && opcion_maquina == 3) {
+        perdiste.style.display = "block";
+        empate.style.display = "none";
+        ganaste.style.display = "none";
+    } else if (selected == 3 && opcion_maquina == 1) {
+        perdiste.style.display = "block";
+        empate.style.display = "none";
+        ganaste.style.display = "none";
+    } else if (selected == 3 && opcion_maquina == 2) {
+        ganaste.style.display = "block";
+        empate.style.display = "none";
+        perdiste.style.display = "none";
+    }
+}
+    </script>
+</body>
+</html>
